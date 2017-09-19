@@ -1,6 +1,5 @@
 import requests, json
 from bs4 import BeautifulSoup
-from threading import Thread
 from flask import Flask
 from flask_ask import Ask, statement, question
 
@@ -28,7 +27,6 @@ def HackerOnePrograms():
     hackerOneReq = requests.get(hackerOneURL)
     hackerOnePrograms = []
     hackerOneProgramResJSON = json.loads(hackerOneReq.text)
-    print(hackerOneProgramResJSON)
     for hackerOneResult in (hackerOneProgramResJSON['results']):
         hackerOnePrograms.append(hackerOneResult['name'])
     recentHackerOnePrograms = (hackerOnePrograms[0:5])
@@ -40,7 +38,6 @@ def HackerOneHacktivity():
     hackerOneHacktivityReq = requests.get(hackerOneHacktivityURL)
     hackerOneHacktivity= []
     hackerOneHacktivityResJSON = json.loads(hackerOneHacktivityReq.text)
-    #print(hackerOneHacktivityResJSON)
     for hackerOneHacktivityResult in (hackerOneHacktivityResJSON['reports']):
         if (hackerOneHacktivityResult['bounty_disclosed']) == True:
             try:
@@ -49,20 +46,20 @@ def HackerOneHacktivity():
                                            " reported by user " + str(hackerOneHacktivityResult['reporter']['username']))
             except:
                 pass
-    recentHackerOneHacktivity = (hackerOneHacktivity[0:3])
+    recentHackerOneHacktivity = (hackerOneHacktivity[0:5])
     return(recentHackerOneHacktivity)
 
 ### Welcome Message
 @ask.launch
 def start_skill():
-    welcome_message = "Greetings Hacker, would you like to hear the newest bug bounty programs from bug crowd, hacker one or hacker one's hacktivity reports?"
+    welcome_message = "Greetings Hacker, would you like to hear the newest bug crowd programs, hacker one programs or hacker ones hacktivity reports?"
     return question(welcome_message)
 
 ### Return Bugcrowd Programs
 @ask.intent("BugcrowdIntent")
 def BugcrowdProgramsInit():
     bugcrowdPrograms = BugcrowdPrograms()
-    bugcrowdPrograms_msg = 'The most recent Bug crowd programs are {}'.format(bugcrowdPrograms)
+    bugcrowdPrograms_msg = 'The most recent Bug Crowd programs are {}'.format(bugcrowdPrograms)
     return statement(bugcrowdPrograms_msg)
 
 ### Return HackerOne Programs
@@ -79,8 +76,23 @@ def hacktivityIntent():
     hackerOneHacktivity_msg = 'The most recent Hacker One Hacktivity reports are {}'.format(hackerOneHacktivity)
     return statement(hackerOneHacktivity_msg)
 
-#Thread(target=HackerOnePrograms).start()
-#Thread(target=BugcrowdPrograms).start()
+### Amazon Help Intent
+@ask.intent('AMAZON.HelpIntent')
+def help():
+    helpText = "You can ask bug bounty to tell you the newest Bug Crowd programs, newest Hacker One programs or latest Hacker One hacktivity repots."
+    return question(helpText).reprompt(helpText)
+
+### Amazon Stop Intent
+@ask.intent('AMAZON.StopIntent')
+def stop():
+    stopText = "Bug bounty also known as the Gibson shutting down."
+    return statement(stopText)
+
+### Amazon Cancel Intent
+@ask.intent('AMAZON.CancelIntent')
+def cancel():
+    cancelText = "Bug bounty canceled, Joshua"
+    return statement(cancelText)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
