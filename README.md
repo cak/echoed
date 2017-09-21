@@ -3,7 +3,7 @@ Simple Alexa Skill - Bug Bounty
 
 Bug Bounty will keep you informed of the latest public bug bounty programs and reports by providing the top five latest public programs from the Bugcrowd and HackerOne bug bounty platforms and the latest public HackerOne Hacktivity Reports.
 
-*Currently in Alexa Certification Review*
+**Skill is Live: https://www.amazon.com/dp/B075RB75RH/**
 
 
 Example Phrases:

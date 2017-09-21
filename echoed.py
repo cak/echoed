@@ -49,7 +49,7 @@ def HackerOneHacktivity():
                     hackerOneHacktivityResult['reporter']['username']))
             except:
                 pass
-    recentHackerOneHacktivity = (hackerOneHacktivity[0:5])
+    recentHackerOneHacktivity = (hackerOneHacktivity[0:3])
     return (recentHackerOneHacktivity)
 
 
